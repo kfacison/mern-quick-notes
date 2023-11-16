@@ -31,8 +31,8 @@ export default function NotesPage({notesArr, setNotesArr}){
         <>
         <h1>Notes Page</h1>
         <div className="form-container">
-                    <form autoComplete="off" onSubmit={handelSubmit}>
-                    <label>New Note</label><br/>
+                    <form autoComplete="off" onSubmit={handelSubmit} className="notes">
+                    <label className="notes">New Note</label><br/>
                     <textarea name="note" value={newNote.note} onChange={handleChange} cols="30" rows="10" required/>
                     <button type="submit" >Add Note</button>
                     </form>
