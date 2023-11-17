@@ -1,30 +1,32 @@
 import { useState } from "react";
+import {addNote} from "../../utilities/notes-api"
 
-export default function NotesPage({notesArr, setNotesArr}){
-    const notes = notesArr.map((n, idx) => <div key={idx}> <p>{n.note}</p> <p>{n.createdAt.toDateString()}</p> </div>);
+
+export default function NotesPage({notesArr, setNotesArr, user}){
+    const notes = notesArr.map((n, idx) => <div key={idx}> <p>{n.text}</p> </div>);
     const [newNote, setNewNote] = useState({
-        note: '',
-        createdAt: ''
+        text: '',
+        user: user._id
     });
-    const [error, setError] = useState('');
 
     function handleChange(evt) {
-        setNewNote({ ...newNote, [evt.target.name]: evt.target.value, createdAt: new Date() });
-        setError('');
+        setNewNote({ ...newNote, [evt.target.name]: evt.target.value});
     }
     async function handelSubmit(evt){
         evt.preventDefault();
-        const commindedNotes = notesArr;
-        commindedNotes.push(newNote);
+        
+        // const commindedNotes = notesArr;
+        // commindedNotes.push(newNote);
         try {
-        await setNotesArr(commindedNotes);
+            const newNotesArr=await addNote(newNote);
+        await setNotesArr(newNotesArr);
         setNewNote({
             note: '',
             createdAt: ''
         });
-        } catch {
-        console.log(error)
-        setError('Note Create Failed - Try Again');
+        } catch(error) {
+        console.log(error);
+       // setError('Note Create Failed - Try Again');
         }
     }
     return(
@@ -33,7 +35,7 @@ export default function NotesPage({notesArr, setNotesArr}){
         <div className="form-container">
                     <form autoComplete="off" onSubmit={handelSubmit} className="notes">
                     <label className="notes">New Note</label><br/>
-                    <textarea name="note" value={newNote.note} onChange={handleChange} cols="30" rows="10" required/>
+                    <textarea name="text" value={newNote.text} onChange={handleChange} cols="30" rows="10" required/>
                     <button type="submit" >Add Note</button>
                     </form>
                 </div>
