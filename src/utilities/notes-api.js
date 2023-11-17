@@ -7,6 +7,19 @@ export async function addNote(newNote){
         });
         return response.json();
     } catch (error) {
-        console.log(error)
+        console.log(error);
+    }
+}
+
+export async function getNotes(){
+    try {
+        const response = await fetch("/notes",{
+            method: "GET",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify('')
+        });
+        return response.json();
+    } catch (error) {
+        console.log(error);
     }
 }
